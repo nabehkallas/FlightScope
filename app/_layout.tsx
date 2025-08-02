@@ -1,20 +1,30 @@
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { PaperProvider } from 'react-native-paper';
-import 'react-native-reanimated';
+import { ActivityIndicator, View } from 'react-native';
+import { AuthProvider, useAuth } from '../context/AuthContext';
 
+function RootLayoutNav() {
+  const { isLoading } = useAuth();
 
-export default function RootLayout() {
-  
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   return (
-    <PaperProvider>
-      <Stack>
-        <Stack.Screen name="tabs" options={{ headerShown: false }} />
-        <Stack.Screen name="(AuthScreens)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </PaperProvider>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(AuthScreens)" />
+      <Stack.Screen name="tabs" />
+    </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
   );
 }

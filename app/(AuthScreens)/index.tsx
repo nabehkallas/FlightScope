@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Keyboard, Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Colors } from '../../constants/Colors';
-import { auth } from '../../firebase'; // Adjust the path to your firebase.ts file
+import { auth } from '../../firebase';
 
 
 
@@ -55,7 +55,7 @@ const LoginScreen = () => {
           labelStyle={styles.buttonLabel}
           mode="contained"
           onPress={handleLogin}
-          buttonColor={Colors.light.primary}>
+          buttonColor={"#050955"}>
           Log in
         </Button>
       </View>

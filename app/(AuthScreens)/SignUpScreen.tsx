@@ -55,7 +55,7 @@ const SignUpScreen = () => {
           labelStyle={styles.buttonLabel}
           mode="contained"
           onPress={handleSignUp}
-          buttonColor={Colors.light.primary}>
+          buttonColor={"#050955"}>
           Sign Up
         </Button>
       </View>
