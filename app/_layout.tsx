@@ -15,8 +15,9 @@ function RootLayoutNav() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(AuthScreens)" />
-      <Stack.Screen name="tabs" />
+      <Stack.Screen name="(AuthTabs)" />
+      <Stack.Screen name="Home" />
+      <Stack.Screen name="Results" />
     </Stack>
   );
 }

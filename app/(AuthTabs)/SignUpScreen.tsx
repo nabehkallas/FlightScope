@@ -1,10 +1,11 @@
 import { Image } from 'expo-image';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { useState } from 'react';
-import { Keyboard, Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Colors } from '../../constants/Colors';
 import { auth } from '../../firebase'; // Adjust the path to your firebase.ts file
+import { authStyles } from './auth.styles';
 
 
 
@@ -23,16 +24,16 @@ const SignUpScreen = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
+      <View style={authStyles.container}>
         <Image
-          style={styles.image}
+          style={authStyles.image}
           source={require('../../assets/images/FlightScopeLogo.png')}
           contentFit="cover"
         />
-        {error && <Text style={styles.error}>{error}</Text>}
+        {error && <Text style={authStyles.error}>{error}</Text>}
         <TextInput
           textColor="black"
-          style={styles.input}
+          style={authStyles.input}
           placeholder="Email"
           value={email}
           placeholderTextColor={Colors.light.placeholder}
@@ -42,7 +43,7 @@ const SignUpScreen = () => {
         />
         <TextInput
           textColor="black"
-          style={styles.input}
+          style={authStyles.input}
           placeholder="Password"
           value={password}
           placeholderTextColor={Colors.light.placeholder}
@@ -51,8 +52,8 @@ const SignUpScreen = () => {
           theme={{ colors: { primary: Colors.light.primary } }}
         />
         <Button
-          style={styles.button}
-          labelStyle={styles.buttonLabel}
+          style={authStyles.signUpButton}
+          labelStyle={authStyles.buttonLabel}
           mode="contained"
           onPress={handleSignUp}
           buttonColor={"#050955"}>
@@ -62,47 +63,5 @@ const SignUpScreen = () => {
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-   image: {
-      ...Platform.select({
-        web: {
-          top: -50,
-          flex: 0.8,
-          width: '40%',
-        },
-        default: {
-          top: -50,
-          flex: 0.4,
-          width: '100%',
-        },
-      }),
-    },
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 20,
-      backgroundColor: Colors.light.background,
-    },
-    button: {
-      width: '40%',
-      marginTop: 20,
-      paddingVertical: 4,
-    },
-    buttonLabel: {
-      fontSize: 14,
-      color: 'white',
-    },
-    input: {
-      width: '100%',
-      marginBottom: 10,
-      backgroundColor: Colors.light.background,
-    },
-    error: {
-      color: Colors.light.error,
-      marginBottom: 10,
-    },
-});
 
 export default SignUpScreen;

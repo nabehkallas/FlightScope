@@ -1,14 +1,15 @@
 import { router, useSegments } from 'expo-router';
-import { onAuthStateChanged, User } from 'firebase/auth';
+import { signOut as firebaseSignOut, onAuthStateChanged, User } from 'firebase/auth';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { auth } from '../firebase';
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
+  signOut: () => void;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, isLoading: true });
+const AuthContext = createContext<AuthContextType>({ user: null, isLoading: true, signOut: () => {} });
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -20,15 +21,15 @@ function useProtectedRoute(user: User | null, isLoading: boolean) {
   useEffect(() => {
     if (isLoading) return; // Don't redirect until we know the auth state
 
-    const inAuthGroup = segments[0] === '(AuthScreens)';
+    const inAuthGroup = segments[0] === '(AuthTabs)';
 
     if (!user && !inAuthGroup) {
       // Redirect to the sign-in page if the user is not signed in
       // and not in the auth group.
-      router.replace('/(AuthScreens)');
+      router.replace('/(AuthTabs)');
     } else if (user && inAuthGroup) {
       // Redirect away from the sign-in page if the user is signed in.
-      router.replace('/tabs/explore');
+      router.replace('/Home');
     }
   }, [user, segments, isLoading]);
 }
@@ -36,6 +37,10 @@ function useProtectedRoute(user: User | null, isLoading: boolean) {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const signOut = () => {
+    firebaseSignOut(auth);
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -48,5 +53,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useProtectedRoute(user, isLoading);
 
-  return <AuthContext.Provider value={{ user, isLoading }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, isLoading, signOut }}>{children}</AuthContext.Provider>;
 }
